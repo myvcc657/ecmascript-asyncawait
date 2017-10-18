@@ -3,9 +3,6 @@
   <p>This list is not complete. It also does not duplicate any information on the <a href="https://github.com/tc39/ecmascript-asyncawait/issues">Github issues list</a>. It serves as a reminder to the author only.</p>
   <ol>
     <li>Updates to CreateDynamicFunction for creating dynamic async functions.</li>
-    <li>Semantics (mostly runtime) for async methods.</li>
-    <li>EvaluateBody semantics for AsyncConciseBody.</li>
-    <li>IteratorBindingInitialization runtime semantics.</li>
   </ol>
 </emu-annex>
 <emu-annex id="desugaring">
@@ -20,7 +17,7 @@ function &lt;name>?&lt;argumentlist>{ return spawn(function*() &lt;body>, this);
 
   <p>The `spawn` used in the above desugaring is a call to the following algorithm.  This algorithm does not need to be exposed directly as an API to user code, it is part of the semantics of async functions.</p>
 
-<pre><code language="javascript">
+<pre><code class="lang-javascript">
 function spawn(genF, self) {
     return new Promise(function(resolve, reject) {
         var gen = genF.call(self);

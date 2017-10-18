@@ -1,0 +1,182 @@
+<emu-clause id="async-arrows">
+  <h1>Async Arrow Functions</h1>
+
+  <emu-clause id="async-arrows-static-semantics-early-errors">
+    <h1>Static Semantics: Early Errors</h1>
+    <p><emu-prodref name="AsyncArrowFunction" a="1" class="inline"></emu-prodref></p>
+    <ul>
+      <li>It is a Syntax Error if ContainsUseStrict of |AsyncConciseBody| is *true* and IsSimpleParameterList of |ArrowParameters| is *false*.</li>
+      <li>It is a Syntax Error if any element of the BoundNames of |AsyncArrowBindingIdentifier| also occurs in the LexicallyDeclaredNames of |AsyncConciseBody|.
+    </ul>
+    <p><emu-prodref name="AsyncArrowFunction" a="2" class="inline"></emu-prodref></p>
+    <ul>
+      <li>It is a Syntax Error if |CoverCallExpressionAndAsyncArrowHead| Contains |YieldExpression| is *true*.
+      <li>It is a Syntax Error if |CoverCallExpressionAndAsyncArrowHead| Contains |AwaitExpression| is *true*.
+      <li>It is a Syntax Error if any element of the BoundNames of |CoverCallExpressionAndAsyncArrowHead| also occurs in the LexicallyDeclaredNames of |AsyncConciseBody|.
+      <li>It is a Syntax Error if the lexical token sequence matched by |CoverCallExpressionAndAsyncArrowHead| cannot be parsed with no tokens left over using |AsyncArrowHead| as the goal symbol.</li>
+      <li>All Early Error rules for |AsyncArrowHead| and its derived productions apply to CoveredAsyncArrowHead of |CoverCallExpressionAndAsyncArrowHead|.</li>
+    </ul>
+  </emu-clause>
+
+  <emu-clause id="async-arrows-static-semantics-CoveredAsyncArrowHead">
+    <h1>Static Semantics: CoveredAsyncArrowHead</h1>
+    <p><emu-prodref name="CoverCallExpressionAndAsyncArrowHead" class="inline"></emu-prodref></p>
+    <emu-alg>
+      1. Return the result of parsing the lexical token stream matched by |CoverCallExpressionAndAsyncArrowHead|<sub>[Yield, Await]</sub> using |AsyncArrowHead| as the goal symbol.
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id="async-arrows-static-semantics-BoundNames">
+    <h1>Static Semantics: BoundNames</h1>
+    <p><emu-prodref name="CoverCallExpressionAndAsyncArrowHead" a="1" class="inline"></emu-prodref></p>
+    <emu-alg>
+      1. Let _head_ be CoveredAsyncFunctionHead of |CoverCallExpressionAndAsyncArrowHead|.
+      1. Return the BoundNames of _head_.
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id="async-arrows-static-semantics-Contains">
+    <h1>Static Semantics: Contains</h1>
+    <p>With parameter _symbol_.</p>
+    <p><emu-prodref name="AsyncArrowFunction" a="1" class="inline"></emu-prodref></p>
+    <emu-alg>
+      1. If _symbol_ is not one of <emu-nt>NewTarget</emu-nt>, <emu-nt>SuperProperty</emu-nt>, <emu-nt>SuperCall</emu-nt>, <emu-t>super</emu-t>, or <emu-t>this</emu-t>, return *false*.
+      1. Return |AsyncConciseBody| contains _symbol_.
+    </emu-alg>
+    <p><emu-prodref name="AsyncArrowFunction" a="2" class="inline"></emu-prodref></p>
+    <emu-alg>
+      1. If _symbol_ is not one of <emu-nt>NewTarget</emu-nt>, <emu-nt>SuperProperty</emu-nt>, <emu-nt>SuperCall</emu-nt>, <emu-t>super</emu-t>, or <emu-t>this</emu-t>, return *false*.
+      2. Let _head_ be CoveredAsyncFunctionHead of |CoverCallExpressionAndAsyncArrowHead|.
+      3. If _head_ Contains _symbol_ is *true*, return *true*.
+      4. Return |AsyncConciseBody| Contains _symbol_.
+    </emu-alg>
+    <emu-note>Normally, Contains does not look inside most function forms. However, Contains is used to detect `new.target`, `this`, and `super` usage within an AsyncArrowFunction.</emu-note>
+  </emu-clause>
+
+  <emu-clause id="async-arrows-static-semantics-ContainsExpression">
+    <h1>Static Semantics: ContainsExpression</h1>
+    <p><emu-prodref name="AsyncArrowBindingIdentifier" a="1" class="inline"></emu-prodref></p>
+    <emu-alg>
+      1. Return *false*.
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id="async-arrows-static-semantics-ExpectedArgumentCount">
+    <h1>Static Semantics: ExpectedArgumentCount</h1>
+    <p><emu-prodref name="AsyncArrowBindingIdentifier" a="1" class="inline"></emu-prodref></p>
+    <emu-alg>
+      1. Return *1*.
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id="async-arrows-static-semantics-HasName">
+    <h1>Static Semantics: HasName</h1>
+    <p><emu-prodref name="AsyncArrowFunction" a="1" class="inline"></p>
+    <p><emu-prodref name="AsyncArrowFunction" a="2" class="inline"></p>
+    <emu-alg>
+      1. Return *false*.
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id="async-arrows-static-semantics-IsSimpleParameterList">
+    <h1>Static Semantics: IsSimpleParameterList</h1>
+    <p><emu-prodref name="AsyncArrowBindingIdentifier" a="1" class="inline"></emu-prodref></p>
+    <emu-alg>
+      1. Return *true*.
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id="async-arrows-static-semantics-LexicallyDeclaredNames">
+    <h1>Static Semantics: LexicallyDeclaredNames</h1>
+    <p><emu-prodref name="AsyncConciseBody" a="1" class="inline"></emu-prodref></p>
+    <emu-alg>
+      1. Return an empty List.
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id="async-arrows-static-semantics-LexicallyScopedDeclarations">
+    <h1>Static Semantics: LexicallyScopedDeclarations</h1>
+    <p><emu-prodref name="AsyncConciseBody" a="1" class="inline"></emu-prodref></p>
+    <emu-alg>
+      1. Return an empty List.
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id="async-arrows-static-semantics-VarDeclaredNames">
+    <h1>Static Semantics: VarDeclaredNames</h1>
+    <p><emu-prodref name="AsyncConciseBody" a="1" class="inline"></emu-prodref></p>
+    <emu-alg>
+      1. Return an empty List.
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id="async-arrows-static-semantics-VarScopedDeclarations">
+    <h1>Static Semantics: VarScopedDeclarations</h1>
+    <p><emu-prodref name="AsyncConciseBody" a="1" class="inline"></emu-prodref></p>
+    <emu-alg>
+      1. Return an empty List.
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id="async-arrows-IteratorBindingInitialization">
+    <h1>Runtime Semantics: IteratorBindingInitialization</h1>
+    <p>With parameters _iteratorRecord_ and _environment_.</p>
+    <p><emu-prodref name="AsyncArrowBindingIdentifier" a="1" class="inline"></emu-prodref></p>
+    <emu-alg>
+      1. Assert: _iteratorRecord_.[[done]] is *false*.
+      1. Let _next_ be IteratorStep(_iteratorRecord_.[[iterator]]).
+      1. If _next_ is an abrupt completion, set _iteratorRecord_.[[done]] to *true*.
+      1. ReturnIfAbrupt(_next_).
+      1. If _next_ is *false*, set _iteratorRecord_.[[done]] to true.
+      1. Else
+        1. Let _v_ be IteratorValue(_next_).
+        1. If _v_ is an abrupt completion, set _iteratorRecord_.[[done]] to *true*.
+        1. ReturnIfAbrupt(_v_).
+      1. If _iteratorRecord_.[[done]] is *true*, let _v_ be *undefined*.
+      1. Return the result of performing BindingInitialization for |BindingIdentifier| using _v_ and _environment_ as the arguments.
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id="async-arrows-EvaluateBody">
+    <h1>Runtime Semantics: EvaluateBody</h1>
+    <p>With parameter _functionObject_ and List _argumentsList_.</p>
+    <p><emu-prodref name="AsyncConciseBody" a="1" class="inline"></emu-prodref></p>
+    <emu-alg>
+      1. Let _promiseCapability_ be NewPromiseCapability(%Promise%).
+      1. Let _declResult_ be FunctionDeclarationInstantiation(_functionObject_, _argumentsList_).
+      1. If _declResult_ is not an abrupt completion, then
+        1. Perform ! AsyncFunctionStart(_promiseCapability_, _AssignmentExpression_).
+      1. Else _declResult_ is an abrupt completion
+        1. Perform ! Call(_promiseCapability_.[[Reject]], *undefined*, «_declResult_.[[value]]»).
+      1. Return Completion{[[type]]: ~return~, [[value]]: _promiseCapability_.[[Promise]], [[target]]: ~empty~}.
+    </emu-alg>
+    <p><emu-prodref name="AsyncConciseBody" a="2" class="inline"></emu-prodref></p>
+    <emu-alg>
+      1. Return the result of calling EvaluateBody of |AsyncFunctionBody| passing _functionObject_ and _argumentsList_ as the arguments.
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id="async-function-definitions-runtime-semantics-evaluation">
+    <h1>Runtime Semantics: Evaluation</h1>
+    <p><emu-prodref name="AsyncArrowFunction" a="1" class="inline"></emu-prodref></p>
+    <emu-alg>
+      1. If the function code for this |AsyncArrowFunction| is strict mode code, let _strict_ be true. Otherwise, let _strict_ be false.
+      2. Let _scope_ be the LexicalEnvironment of the running execution context.
+      3. Let _parameters_ be |AsyncArrowBindingIdentifier|.
+      4. Let _closure_ be AsyncFunctionCreate(~Arrow~, _parameters_, |AsyncConciseBody|, _scope_, _strict_).
+      1. Set the [[SourceText]] internal slot of _closure_ to the source text matched by |AsyncArrowFunction|.
+      5. Return _closure_.
+    </emu-alg>
+
+    <p><emu-prodref name="AsyncArrowFunction" a="2" class="inline"></emu-prodref></p>
+    <emu-alg>
+      1. If the function code for this |AsyncArrowFunction| is strict mode code, let _strict_ be true. Otherwise, let _strict_ be false.
+      2. Let _scope_ be the LexicalEnvironment of the running execution context.
+      3. Let _head_ be CoveredAsyncArrowHead of |CoverCallExpressionAndAsyncArrowHead|.
+      4. Let _parameters_ be the |ArrowFormalParameters| production matched by _head_.
+      5. Let _closure_ be AsyncFunctionCreate(~Arrow~, _parameters_, |AsyncConciseBody|, _scope_, _strict_).
+      1. Set the [[SourceText]] internal slot of _closure_ to the source text matched by |AsyncArrowFunction|.
+      6. Return _closure_.
+    </emu-alg>
+  </emu-clause>
+</emu-clause>
